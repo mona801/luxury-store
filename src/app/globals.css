@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-cream-50: #fdfcfa;
+  --color-cream-100: #f9f5ef;
+  --color-cream-200: #f0e8db;
+  --color-cream-300: #e4d5c0;
+  --color-cream-400: #d4bfa0;
+  --color-cream-500: #c4a97f;
+  --color-cream-600: #b08f5e;
+
+  --color-navy-50: #f0f3f7;
+  --color-navy-100: #d9e1ed;
+  --color-navy-200: #b3c3db;
+  --color-navy-300: #8da5c9;
+  --color-navy-400: #6787b7;
+  --color-navy-500: #4169a5;
+  --color-navy-600: #345484;
+  --color-navy-700: #273f63;
+  --color-navy-800: #1a2a42;
+  --color-navy-900: #0d1521;
+
+  --color-gold-50: #fdf9f0;
+  --color-gold-100: #f9f0d8;
+  --color-gold-200: #f0dea6;
+  --color-gold-300: #e5c96e;
+  --color-gold-400: #d4af37;
+  --color-gold-500: #b8962e;
+  --color-gold-600: #9c7d25;
+
+  --color-olive-50: #f5f7f2;
+  --color-olive-100: #e6ece0;
+  --color-olive-200: #cdd9c1;
+  --color-olive-300: #a8be95;
+  --color-olive-400: #7d9e63;
+  --color-olive-500: #5e7a44;
+  --color-olive-600: #4a6136;
+
+  --font-serif: "Playfair Display", "Noto Serif Arabic", Georgia, serif;
+  --font-sans: "Noto Sans Arabic", "Inter", system-ui, sans-serif;
+}
+
+:root {
+  --background: #fdfcfa;
+  --foreground: #1a2a42;
+}
+
+html {
+  direction: rtl;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background-color: #d4af3730;
+  color: #1a2a42;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #c4a97f #f9f5ef;
+}
