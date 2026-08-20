@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Star, Heart, ShoppingBag, Truck, RotateCcw, Shield, Minus, Plus, Check } from "lucide-react";
+import { Star, Heart, ShoppingBag, Truck, RotateCcw, Shield, Minus, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useWishlist } from "@/lib/wishlist-context";
+import { useCart } from "@/lib/cart-context";
 import type { Product } from "@/lib/data";
 
 interface ProductInfoProps {
@@ -12,7 +14,15 @@ interface ProductInfoProps {
 export default function ProductInfo({ product }: ProductInfoProps) {
   const [selectedColor, setSelectedColor] = useState(product.colors[0]?.value ?? "");
   const [quantity, setQuantity] = useState(1);
-  const [wishlisted, setWishlisted] = useState(false);
+  const { toggleWishlist, isWishlisted } = useWishlist();
+  const { addItem } = useCart();
+  const wishlisted = isWishlisted(product.id);
+
+  const handleAddToCart = () => {
+    for (let i = 0; i < quantity; i++) {
+      addItem(product, 1, selectedColor);
+    }
+  };
 
   return (
     <div className="space-y-5">
@@ -148,14 +158,17 @@ export default function ProductInfo({ product }: ProductInfoProps) {
         </div>
 
         {/* Add to cart */}
-        <button className="flex-1 h-11 flex items-center justify-center gap-2 bg-navy-800 text-cream-50 text-sm font-semibold rounded-lg hover:bg-navy-700 transition-colors">
+        <button
+          onClick={handleAddToCart}
+          className="flex-1 h-11 flex items-center justify-center gap-2 bg-navy-800 text-cream-50 text-sm font-semibold rounded-lg hover:bg-navy-700 transition-colors"
+        >
           <ShoppingBag size={18} />
           أضف للسلة
         </button>
 
         {/* Wishlist */}
         <button
-          onClick={() => setWishlisted(!wishlisted)}
+          onClick={() => toggleWishlist(product.id)}
           className={cn(
             "w-11 h-11 border rounded-lg flex items-center justify-center transition-all",
             wishlisted

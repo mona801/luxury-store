@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Heart, ShoppingBag, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useWishlist } from "@/lib/wishlist-context";
 import type { Product } from "@/lib/data";
 
 interface ProductCardProps {
@@ -13,6 +14,8 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const [hovered, setHovered] = useState(false);
+  const { toggleWishlist, isWishlisted } = useWishlist();
+  const liked = isWishlisted(product.id);
 
   return (
     <div
@@ -42,10 +45,14 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* Wishlist */}
         <button
-          className="absolute top-3 left-3 w-9 h-9 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all hover:bg-white z-10"
-          aria-label="أضف للمفضلة"
+          onClick={(e) => { e.preventDefault(); toggleWishlist(product.id); }}
+          className={cn(
+            "absolute top-3 left-3 w-9 h-9 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all z-10",
+            liked ? "opacity-100 bg-red-50 text-red-500" : "bg-white/80 backdrop-blur-sm text-navy-700 hover:bg-white"
+          )}
+          aria-label={liked ? "إزالة من المفضلة" : "أضف للمفضلة"}
         >
-          <Heart size={16} className="text-navy-700" />
+          <Heart size={16} className={liked ? "fill-red-500" : ""} />
         </button>
 
         {/* Quick add to cart */}

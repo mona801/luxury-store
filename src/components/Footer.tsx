@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Phone, Mail, MapPin } from "lucide-react";
 
 const footerLinks = {
@@ -54,9 +55,7 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-9 h-9 bg-cream-50 rounded-sm flex items-center justify-center">
-                <span className="text-navy-800 font-serif text-lg font-bold">م</span>
-              </div>
+              <Image src="/images/logo.jpg" alt="متجر الك" width={36} height={36} className="w-9 h-9 rounded-sm object-cover" />
               <span className="font-serif text-lg font-semibold text-cream-50">
                 متجر الك
               </span>

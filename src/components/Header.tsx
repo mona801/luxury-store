@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Search,
   User,
@@ -14,6 +15,7 @@ import {
 } from "lucide-react";
 import { categories } from "@/lib/data";
 import { useCart } from "@/lib/cart-context";
+import { useAuth } from "@/lib/auth-context";
 import { cn } from "@/lib/utils";
 import CartDrawer from "./CartDrawer";
 
@@ -24,6 +26,7 @@ export default function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const { itemCount } = useCart();
+  const { user } = useAuth();
 
   return (
     <header className="sticky top-0 z-50 w-full">
@@ -48,9 +51,14 @@ export default function Header() {
         <div className="mx-auto max-w-7xl px-4 flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 shrink-0">
-            <div className="w-10 h-10 bg-navy-800 rounded-sm flex items-center justify-center">
-              <span className="text-cream-50 font-serif text-lg font-bold">م</span>
-            </div>
+            <Image
+              src="/images/logo.jpg"
+              alt="متجر الك"
+              width={40}
+              height={40}
+              className="w-10 h-10 rounded-sm object-cover"
+              priority
+            />
             <span className="font-serif text-xl font-semibold text-navy-800 hidden sm:block">
               متجر الك
             </span>
@@ -117,9 +125,9 @@ export default function Header() {
               <Search size={20} />
             </button>
             <Link
-              href="/account"
+              href={user ? "/account" : "/auth/signin"}
               className="p-2 text-navy-700 hover:text-gold-500 transition-colors hidden sm:block"
-              aria-label="حسابي"
+              aria-label={user ? "حسابي" : "تسجيل الدخول"}
             >
               <User size={20} />
             </Link>
@@ -175,9 +183,12 @@ export default function Header() {
           />
           <div className="absolute top-0 right-0 h-full w-80 bg-white shadow-xl overflow-y-auto animate-in slide-in-from-right">
             <div className="flex items-center justify-between p-4 border-b border-cream-200">
-              <span className="font-serif text-lg font-semibold text-navy-800">
-                متجر الك
-              </span>
+              <div className="flex items-center gap-2">
+                <Image src="/images/logo.jpg" alt="متجر الك" width={32} height={32} className="w-8 h-8 rounded-sm object-cover" />
+                <span className="font-serif text-lg font-semibold text-navy-800">
+                  متجر الك
+                </span>
+              </div>
               <button onClick={() => setMobileOpen(false)}>
                 <X size={22} className="text-navy-700" />
               </button>
@@ -234,11 +245,11 @@ export default function Header() {
                 عروض خاصة
               </Link>
               <Link
-                href="/account"
+                href={user ? "/account" : "/auth/signin"}
                 onClick={() => setMobileOpen(false)}
                 className="block py-3 text-sm font-medium text-navy-700"
               >
-                حسابي
+                {user ? `حسابي — ${user.name}` : "تسجيل الدخول"}
               </Link>
             </nav>
           </div>
