@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Check, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { REGIONS, CITIES_BY_REGION, PAYMENT_METHODS } from "@/lib/checkout-data";
+import { PAYMENT_ICONS } from "@/components/PaymentIcons";
 
 const steps = ["معلومات التوصيل", "طريقة الدفع", "مراجعة الطلب"];
 
@@ -177,25 +178,29 @@ function PaymentForm({ payment, setPayment, onNext, onBack }: {
     <div className="bg-white rounded-xl border border-cream-200 p-6">
       <h2 className="text-lg font-semibold text-navy-800 mb-6">طريقة الدفع</h2>
       <div className="space-y-3">
-        {PAYMENT_METHODS.map((m) => (
-          <button key={m.id} onClick={() => setPayment(m.id)}
-            className={cn("w-full flex items-center gap-4 p-4 rounded-xl border-2 transition-all text-right",
-              payment === m.id ? "border-gold-400 bg-gold-400/5" : "border-cream-200 hover:border-cream-400"
-            )}>
-            <div className={cn("w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0",
-              payment === m.id ? "border-gold-400" : "border-cream-300"
-            )}>
-              {payment === m.id && <div className="w-2.5 h-2.5 rounded-full bg-gold-400" />}
-            </div>
-            <div className="flex-1">
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-navy-800">{m.name}</span>
-                {m.badge && <span className="px-2 py-0.5 bg-purple-100 text-purple-700 text-[10px] font-semibold rounded">{m.badge}</span>}
+        {PAYMENT_METHODS.map((m) => {
+          const IconComp = PAYMENT_ICONS[m.icon];
+          return (
+            <button key={m.id} onClick={() => setPayment(m.id)}
+              className={cn("w-full flex items-center gap-4 p-4 rounded-xl border-2 transition-all text-right",
+                payment === m.id ? "border-gold-400 bg-gold-400/5" : "border-cream-200 hover:border-cream-400"
+              )}>
+              <div className={cn("w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0",
+                payment === m.id ? "border-gold-400" : "border-cream-300"
+              )}>
+                {payment === m.id && <div className="w-2.5 h-2.5 rounded-full bg-gold-400" />}
               </div>
-              <p className="text-xs text-cream-500 mt-0.5">{m.desc}</p>
-            </div>
-          </button>
-        ))}
+              {IconComp && <IconComp className="h-7 shrink-0" />}
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium text-navy-800">{m.name}</span>
+                  {m.badge && <span className="px-2 py-0.5 bg-purple-100 text-purple-700 text-[10px] font-semibold rounded">{m.badge}</span>}
+                </div>
+                <p className="text-xs text-cream-500 mt-0.5">{m.desc}</p>
+              </div>
+            </button>
+          );
+        })}
       </div>
       <div className="mt-6 flex items-center justify-between">
         <button onClick={onBack} className="px-6 py-3 border border-cream-200 text-navy-700 text-sm font-medium rounded-lg hover:border-gold-400 transition-colors">
@@ -213,7 +218,8 @@ function ReviewStep({ shipping, payment, items, total, onBack }: {
   shipping: { name: string; phone: string; region: string; city: string; address: string; notes: string };
   payment: string; items: ReturnType<typeof useCart>["items"]; total: number; onBack: () => void;
 }) {
-  const payLabel = PAYMENT_METHODS.find((m) => m.id === payment)?.name ?? payment;
+  const payMethod = PAYMENT_METHODS.find((m) => m.id === payment);
+  const PayIcon = payMethod ? PAYMENT_ICONS[payMethod.icon] : null;
   return (
     <div className="bg-white rounded-xl border border-cream-200 p-6">
       <h2 className="text-lg font-semibold text-navy-800 mb-6">مراجعة الطلب</h2>
@@ -230,7 +236,10 @@ function ReviewStep({ shipping, payment, items, total, onBack }: {
 
         <div className="p-4 bg-cream-50 rounded-xl">
           <h4 className="text-xs font-semibold text-navy-700 mb-2">طريقة الدفع</h4>
-          <p className="text-sm text-navy-800">{payLabel}</p>
+          <div className="flex items-center gap-3">
+            {PayIcon && <PayIcon className="h-7" />}
+            <span className="text-sm text-navy-800">{payMethod?.name}</span>
+          </div>
         </div>
 
         <div className="p-4 bg-cream-50 rounded-xl">

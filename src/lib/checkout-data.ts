@@ -33,9 +33,10 @@ export const CITIES_BY_REGION: Record<string, string[]> = {
 };
 
 export const PAYMENT_METHODS = [
-  { id: "visa", name: "فيزا / ماستركارد", desc: "ادفع ببطاقتك الائتمانية", badge: null as string | null },
-  { id: "mada", name: "مدى", desc: "بطاقة مدى Saudi Pay", badge: null as string | null },
-  { id: "cod", name: "الدفع عند الاستلام", desc: "ادفع نقدًا عند التوصيل", badge: null as string | null },
-  { id: "tabby", name: "تابي", desc: "ادفع بالتقسيط بدون فوائد", badge: "تقسيط" },
-  { id: "tamara", name: "تمارا", desc: "ادفع على 4 دفعات متساوية", badge: "تقسيط" },
+  { id: "visa", name: "فيزا", icon: "visa", desc: "ادفع ببطاقتك الائتمانية", badge: null as string | null },
+  { id: "mastercard", name: "ماستركارد", icon: "mastercard", desc: "ادفع ببطاقتك الائتمانية", badge: null as string | null },
+  { id: "mada", name: "مدى", icon: "mada", desc: "بطاقة مدى Saudi Pay", badge: null as string | null },
+  { id: "cod", name: "الدفع عند الاستلام", icon: "cod", desc: "ادفع نقدًا عند التوصيل", badge: null as string | null },
+  { id: "tabby", name: "تابي", icon: "tabby", desc: "ادفع بالتقسيط بدون فوائد", badge: "تقسيط" },
+  { id: "tamara", name: "تمارا", icon: "tamara", desc: "ادفع على 4 دفعات متساوية", badge: "تقسيط" },
 ];

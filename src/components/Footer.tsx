@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Phone, Mail, MapPin } from "lucide-react";
+import { VisaIcon, MastercardIcon, MadaIcon, TabbyIcon, TamaraIcon } from "./PaymentIcons";
 
 const footerLinks = {
   categories: [
@@ -17,8 +18,6 @@ const footerLinks = {
     { name: "سياسة الإرجاع", href: "/returns" },
   ],
 };
-
-const paymentMethods = ["Visa", "Mada", "Mastercard", "تابي", "تمارا"];
 
 function InstagramIcon({ size = 16 }: { size?: number }) {
   return (
@@ -123,12 +122,12 @@ export default function Footer() {
             </ul>
 
             <h3 className="text-cream-50 font-semibold text-sm mb-3">طرق الدفع</h3>
-            <div className="flex flex-wrap gap-2">
-              {paymentMethods.map((pm) => (
-                <span key={pm} className="px-2.5 py-1 bg-navy-700 rounded text-xs text-cream-300">
-                  {pm}
-                </span>
-              ))}
+            <div className="flex items-center gap-2">
+              <VisaIcon className="h-7" />
+              <MastercardIcon className="h-7" />
+              <MadaIcon className="h-7" />
+              <TabbyIcon className="h-7" />
+              <TamaraIcon className="h-7" />
             </div>
           </div>
         </div>
