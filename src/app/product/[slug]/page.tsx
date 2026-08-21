@@ -41,7 +41,7 @@ export default function ProductPage() {
             </Link>
             <ChevronLeft size={12} />
             <Link
-              href={`/category/${product.category}`}
+              href={`/category/${product.category === "living" ? "living-room" : product.category}`}
               className="hover:text-gold-500 transition-colors"
             >
               {category?.name ?? product.category}
@@ -54,7 +54,7 @@ export default function ProductPage() {
 
       {/* Product section */}
       <div className="mx-auto max-w-7xl px-4 py-8 sm:py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
           {/* Gallery */}
           <ProductGallery images={product.images} name={product.name} badge={product.badge} />
 

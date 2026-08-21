@@ -26,16 +26,22 @@ export default function ContactPage() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-7xl px-4 py-10 sm:py-16">
-        <div className="text-center mb-12">
-          <h1 className="text-2xl sm:text-3xl font-bold text-navy-800 mb-3" style={{ fontFamily: "var(--font-playfair), 'Noto Serif Arabic', serif" }}>
+      {/* Hero */}
+      <section className="py-16 sm:py-24 bg-white">
+        <div className="mx-auto max-w-7xl px-4 text-center">
+          <span className="inline-block px-4 py-1.5 bg-gold-400/15 text-gold-500 text-xs font-medium rounded-full mb-6 border border-gold-400/20 tracking-wider">
+            CONTACT US
+          </span>
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-navy-800 mb-4" style={{ fontFamily: "var(--font-playfair), 'Noto Serif Arabic', serif" }}>
             تواصل معنا
           </h1>
-          <p className="text-cream-500 text-sm max-w-lg mx-auto">
-            يسعدنا تواصلك معنا. لا تتردد في طرح أي سؤال أو استفسار.
+          <p className="text-cream-500 text-sm max-w-lg mx-auto leading-relaxed">
+            يسعدنا تواصلك معنا. لا تتردد في طرح أي سؤال أو استفسار. فريقنا جاهز لمساعدتك.
           </p>
         </div>
+      </section>
 
+      <div className="mx-auto max-w-7xl px-4 pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
           {/* Form */}
           <div className="lg:col-span-3">
@@ -54,28 +60,28 @@ export default function ContactPage() {
                   <div>
                     <label className="text-xs font-medium text-navy-700 mb-1.5 block">الاسم *</label>
                     <input type="text" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
-                      className="w-full h-11 px-4 border border-cream-200 rounded-lg text-sm focus:outline-none focus:border-gold-400 bg-cream-50" />
+                      className="w-full h-11 px-4 border border-cream-200 rounded-lg text-sm focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400/20 bg-cream-50 transition-colors" />
                   </div>
                   <div>
                     <label className="text-xs font-medium text-navy-700 mb-1.5 block">البريد الإلكتروني *</label>
                     <input type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      className="w-full h-11 px-4 border border-cream-200 rounded-lg text-sm focus:outline-none focus:border-gold-400 bg-cream-50" dir="ltr" />
+                      className="w-full h-11 px-4 border border-cream-200 rounded-lg text-sm focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400/20 bg-cream-50 transition-colors" dir="ltr" />
                   </div>
                   <div>
                     <label className="text-xs font-medium text-navy-700 mb-1.5 block">رقم الجوال</label>
                     <input type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                      className="w-full h-11 px-4 border border-cream-200 rounded-lg text-sm focus:outline-none focus:border-gold-400 bg-cream-50" dir="ltr" />
+                      className="w-full h-11 px-4 border border-cream-200 rounded-lg text-sm focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400/20 bg-cream-50 transition-colors" dir="ltr" />
                   </div>
                   <div>
                     <label className="text-xs font-medium text-navy-700 mb-1.5 block">الموضوع *</label>
                     <input type="text" required value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                      className="w-full h-11 px-4 border border-cream-200 rounded-lg text-sm focus:outline-none focus:border-gold-400 bg-cream-50" />
+                      className="w-full h-11 px-4 border border-cream-200 rounded-lg text-sm focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400/20 bg-cream-50 transition-colors" />
                   </div>
                 </div>
                 <div className="mb-6">
                   <label className="text-xs font-medium text-navy-700 mb-1.5 block">الرسالة *</label>
                   <textarea required value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })}
-                    rows={5} className="w-full px-4 py-3 border border-cream-200 rounded-lg text-sm focus:outline-none focus:border-gold-400 bg-cream-50 resize-none" />
+                    rows={5} className="w-full px-4 py-3 border border-cream-200 rounded-lg text-sm focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400/20 bg-cream-50 resize-none transition-colors" />
                 </div>
                 <button type="submit" className="px-8 py-3 bg-navy-800 text-cream-50 text-sm font-semibold rounded-lg hover:bg-navy-700 transition-colors">
                   إرسال الرسالة
@@ -91,7 +97,7 @@ export default function ContactPage() {
               <div className="space-y-4">
                 {[
                   { icon: Phone, label: "الهاتف", value: "+966 55 123 4567", dir: "ltr" },
-                  { icon: Mail, label: "البريد الإلكتروني", value: "info@yourbrand.sa", dir: "ltr" },
+                  { icon: Mail, label: "البريد الإلكتروني", value: "info@luxurystore.sa", dir: "ltr" },
                   { icon: MapPin, label: "العنوان", value: "جدة، المملكة العربية السعودية", dir: undefined },
                   { icon: Clock, label: "ساعات العمل", value: "السبت - الخميس: 9 ص - 11 م", dir: undefined },
                 ].map((c) => (

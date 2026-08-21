@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -25,13 +25,43 @@ export default function Header() {
   const [mobileSubmenu, setMobileSubmenu] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [isHome, setIsHome] = useState(false);
   const { itemCount } = useCart();
   const { user } = useAuth();
 
+  useEffect(() => {
+    setIsHome(window.location.pathname === "/");
+    const onScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    setIsHome(window.location.pathname === "/");
+  }, []);
+
+  const transparent = isHome && !scrolled;
+
   return (
-    <header className="sticky top-0 z-50 w-full">
-      {/* Top bar */}
-      <div className="bg-navy-800 text-cream-100 text-xs">
+    <header
+      className={cn(
+        "fixed top-0 z-50 w-full transition-all duration-500",
+        transparent
+          ? "bg-transparent"
+          : "bg-cream-50/95 backdrop-blur-md shadow-sm"
+      )}
+    >
+      {/* Top bar — only visible when not transparent */}
+      <div
+        className={cn(
+          "transition-all duration-500 overflow-hidden",
+          transparent
+            ? "max-h-0 opacity-0"
+            : "max-h-10 opacity-100 bg-navy-800 text-cream-100 text-xs"
+        )}
+      >
         <div className="mx-auto max-w-7xl px-4 flex items-center justify-between h-9">
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1">
@@ -47,7 +77,7 @@ export default function Header() {
       </div>
 
       {/* Main header */}
-      <div className="bg-cream-50/95 backdrop-blur-md border-b border-cream-200">
+      <div className="transition-colors duration-500">
         <div className="mx-auto max-w-7xl px-4 flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 shrink-0">
@@ -59,7 +89,12 @@ export default function Header() {
               className="w-10 h-10 rounded-sm object-cover"
               priority
             />
-            <span className="font-serif text-xl font-semibold text-navy-800 hidden sm:block">
+            <span
+              className={cn(
+                "font-serif text-xl font-semibold hidden sm:block transition-colors duration-500",
+                transparent ? "text-cream-50" : "text-navy-800"
+              )}
+            >
               متجر الك
             </span>
           </Link>
@@ -73,7 +108,14 @@ export default function Header() {
                 onMouseEnter={() => setMegaOpen(true)}
                 onMouseLeave={() => setMegaOpen(false)}
               >
-                <button className="flex items-center gap-1 text-sm font-medium text-navy-700 hover:text-gold-500 transition-colors">
+                <button
+                  className={cn(
+                    "flex items-center gap-1 text-sm font-medium transition-colors",
+                    transparent
+                      ? "text-cream-100 hover:text-gold-400"
+                      : "text-navy-700 hover:text-gold-500"
+                  )}
+                >
                   {cat.name}
                   <ChevronDown
                     size={14}
@@ -108,8 +150,13 @@ export default function Header() {
               </div>
             ))}
             <Link
-              href="/category/deals"
-              className="text-sm font-medium text-gold-500 hover:text-gold-600 transition-colors"
+              href="/category/living-room"
+              className={cn(
+                "text-sm font-medium transition-colors",
+                transparent
+                  ? "text-gold-400 hover:text-gold-300"
+                  : "text-gold-500 hover:text-gold-600"
+              )}
             >
               عروض خاصة
             </Link>
@@ -119,21 +166,36 @@ export default function Header() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => setSearchOpen(!searchOpen)}
-              className="p-2 text-navy-700 hover:text-gold-500 transition-colors"
+              className={cn(
+                "p-2 transition-colors",
+                transparent
+                  ? "text-cream-100 hover:text-gold-400"
+                  : "text-navy-700 hover:text-gold-500"
+              )}
               aria-label="بحث"
             >
               <Search size={20} />
             </button>
             <Link
               href={user ? "/account" : "/auth/signin"}
-              className="p-2 text-navy-700 hover:text-gold-500 transition-colors hidden sm:block"
+              className={cn(
+                "p-2 transition-colors hidden sm:block",
+                transparent
+                  ? "text-cream-100 hover:text-gold-400"
+                  : "text-navy-700 hover:text-gold-500"
+              )}
               aria-label={user ? "حسابي" : "تسجيل الدخول"}
             >
               <User size={20} />
             </Link>
             <button
               onClick={() => setCartOpen(true)}
-              className="relative p-2 text-navy-700 hover:text-gold-500 transition-colors"
+              className={cn(
+                "relative p-2 transition-colors",
+                transparent
+                  ? "text-cream-100 hover:text-gold-400"
+                  : "text-navy-700 hover:text-gold-500"
+              )}
               aria-label="سلة التسوق"
             >
               <ShoppingBag size={20} />
@@ -145,7 +207,12 @@ export default function Header() {
             </button>
             <button
               onClick={() => setMobileOpen(true)}
-              className="p-2 text-navy-700 hover:text-gold-500 transition-colors lg:hidden"
+              className={cn(
+                "p-2 transition-colors lg:hidden",
+                transparent
+                  ? "text-cream-100 hover:text-gold-400"
+                  : "text-navy-700 hover:text-gold-500"
+              )}
               aria-label="القائمة"
             >
               <Menu size={22} />
@@ -184,7 +251,13 @@ export default function Header() {
           <div className="absolute top-0 right-0 h-full w-80 bg-white shadow-xl overflow-y-auto animate-in slide-in-from-right">
             <div className="flex items-center justify-between p-4 border-b border-cream-200">
               <div className="flex items-center gap-2">
-                <Image src="/images/logo.jpg" alt="متجر الك" width={32} height={32} className="w-8 h-8 rounded-sm object-cover" />
+                <Image
+                  src="/images/logo.jpg"
+                  alt="متجر الك"
+                  width={32}
+                  height={32}
+                  className="w-8 h-8 rounded-sm object-cover"
+                />
                 <span className="font-serif text-lg font-semibold text-navy-800">
                   متجر الك
                 </span>
@@ -238,7 +311,7 @@ export default function Header() {
               ))}
               <hr className="border-cream-200 my-3" />
               <Link
-                href="/category/deals"
+                href="/category/living-room"
                 onClick={() => setMobileOpen(false)}
                 className="block py-3 text-sm font-medium text-gold-500"
               >

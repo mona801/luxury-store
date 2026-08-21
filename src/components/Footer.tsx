@@ -4,12 +4,11 @@ import { Phone, Mail, MapPin } from "lucide-react";
 
 const footerLinks = {
   categories: [
-    { name: "غرفة المعيشة", href: "/category/living" },
+    { name: "غرفة المعيشة", href: "/category/living-room" },
     { name: "غرفة النوم", href: "/category/bedroom" },
     { name: "المطبخ والسفرة", href: "/category/dining" },
     { name: "المكتب", href: "/category/office" },
     { name: "ديكور وإكسسوارات", href: "/category/decor" },
-    { name: "عروض خاصة", href: "/category/deals" },
   ],
   info: [
     { name: "من نحن", href: "/about" },
@@ -115,7 +114,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2 text-sm text-cream-300">
                 <Mail size={15} className="text-gold-400" />
-                <span>info@yourbrand.sa</span>
+                <span>info@luxurystore.sa</span>
               </li>
               <li className="flex items-center gap-2 text-sm text-cream-300">
                 <MapPin size={15} className="text-gold-400" />

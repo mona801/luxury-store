@@ -4,13 +4,16 @@ import { useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ChevronRight, ChevronLeft, Star, Heart, ShoppingBag } from "lucide-react";
-import { products } from "@/lib/data";
+import { products, type Product } from "@/lib/data";
 import { cn } from "@/lib/utils";
+import { useWishlist } from "@/lib/wishlist-context";
 
-function ProductCard({ product }: { product: typeof products[0] }) {
+function ProductCardCarousel({ product }: { product: Product }) {
+  const { toggleWishlist, isWishlisted } = useWishlist();
+  const liked = isWishlisted(product.id);
+
   return (
     <div className="group min-w-[260px] max-w-[300px] flex-shrink-0 bg-white rounded-xl overflow-hidden border border-cream-200 hover:shadow-lg transition-all duration-300">
-      {/* Image */}
       <div className="relative aspect-square bg-cream-100 overflow-hidden">
         <Image
           src={product.images[0]}
@@ -19,23 +22,21 @@ function ProductCard({ product }: { product: typeof products[0] }) {
           sizes="300px"
           className="object-cover group-hover:scale-110 transition-transform duration-500"
         />
-
-        {/* Badge */}
         {product.badge && (
           <span className="absolute top-3 right-3 px-2.5 py-1 bg-gold-400 text-navy-800 text-[11px] font-semibold rounded-md z-10">
             {product.badge}
           </span>
         )}
-
-        {/* Wishlist */}
         <button
-          className="absolute top-3 left-3 w-8 h-8 bg-white/80 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all hover:bg-white z-10"
-          aria-label="أضف للمفضلة"
+          onClick={() => toggleWishlist(product.id)}
+          className={cn(
+            "absolute top-3 left-3 w-8 h-8 rounded-full flex items-center justify-center transition-all z-10",
+            liked ? "bg-red-50 text-red-500" : "bg-white/80 text-navy-700 hover:bg-white"
+          )}
+          aria-label={liked ? "إزالة من المفضلة" : "أضف للمفضلة"}
         >
-          <Heart size={15} className="text-navy-700" />
+          <Heart size={15} className={liked ? "fill-red-500" : ""} />
         </button>
-
-        {/* Quick add */}
         <div className="absolute bottom-0 right-0 left-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-10">
           <button className="w-full flex items-center justify-center gap-2 py-2.5 bg-navy-800 text-cream-50 text-xs font-medium rounded-lg hover:bg-navy-700 transition-colors">
             <ShoppingBag size={14} />
@@ -43,15 +44,12 @@ function ProductCard({ product }: { product: typeof products[0] }) {
           </button>
         </div>
       </div>
-
-      {/* Info */}
       <div className="p-4">
         <Link href={`/product/${product.slug}`}>
           <h3 className="text-sm font-medium text-navy-800 mb-1.5 line-clamp-1 hover:text-gold-500 transition-colors">
             {product.name}
           </h3>
         </Link>
-
         <div className="flex items-center gap-1.5 mb-2">
           {product.colors.map((c) => (
             <span
@@ -62,7 +60,6 @@ function ProductCard({ product }: { product: typeof products[0] }) {
             />
           ))}
         </div>
-
         <div className="flex items-center gap-2">
           <span className="text-sm font-bold text-navy-800">
             {product.price.toLocaleString("ar-SA")} {product.currency}
@@ -73,7 +70,6 @@ function ProductCard({ product }: { product: typeof products[0] }) {
             </span>
           )}
         </div>
-
         {product.rating && (
           <div className="flex items-center gap-1 mt-2">
             <div className="flex items-center gap-0.5">
@@ -99,8 +95,19 @@ function ProductCard({ product }: { product: typeof products[0] }) {
   );
 }
 
-export default function ProductsCarousel({ title, subtitle }: { title: string; subtitle: string }) {
+export default function ProductsCarousel({
+  title,
+  subtitle,
+  productIds,
+}: {
+  title: string;
+  subtitle: string;
+  productIds?: string[];
+}) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const displayProducts = productIds
+    ? products.filter((p) => productIds.includes(p.id))
+    : products;
 
   const scroll = (dir: "left" | "right") => {
     if (!scrollRef.current) return;
@@ -147,9 +154,9 @@ export default function ProductsCarousel({ title, subtitle }: { title: string; s
           className="flex gap-5 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-4"
           style={{ scrollbarWidth: "none" }}
         >
-          {products.map((p) => (
+          {displayProducts.map((p) => (
             <div key={p.id} className="snap-start">
-              <ProductCard product={p} />
+              <ProductCardCarousel product={p} />
             </div>
           ))}
         </div>
