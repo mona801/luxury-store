@@ -160,6 +160,17 @@ export default function Header() {
             >
               عروض خاصة
             </Link>
+            <Link
+              href="/virtual-showroom"
+              className={cn(
+                "text-sm font-medium transition-colors",
+                transparent
+                  ? "text-gold-400 hover:text-gold-300"
+                  : "text-gold-500 hover:text-gold-600"
+              )}
+            >
+              المعرض الافتراضي
+            </Link>
           </nav>
 
           {/* Actions */}
@@ -316,6 +327,13 @@ export default function Header() {
                 className="block py-3 text-sm font-medium text-gold-500"
               >
                 عروض خاصة
+              </Link>
+              <Link
+                href="/virtual-showroom"
+                onClick={() => setMobileOpen(false)}
+                className="block py-3 text-sm font-medium text-gold-500"
+              >
+                المعرض الافتراضي
               </Link>
               <Link
                 href={user ? "/account" : "/auth/signin"}
