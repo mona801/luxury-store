@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import { products, categories } from "@/lib/data";
@@ -12,11 +12,16 @@ import SortBar from "@/components/SortBar";
 
 export default function CategoryPage() {
   const params = useParams();
+  const searchParams = useSearchParams();
   const slug = params?.slug as string;
+  const subSlug = searchParams?.get("sub") as string | null;
 
   const category = categories.find((c) => c.slug === slug);
   const categoryProducts = category
-    ? products.filter((p) => p.category === category.id)
+    ? products.filter(
+        (p) =>
+          p.category === category.id && (!subSlug || p.subcategory === subSlug)
+      )
     : products;
 
   const [sort, setSort] = useState("relevant");
@@ -83,12 +88,37 @@ export default function CategoryPage() {
           className="text-2xl sm:text-3xl font-bold text-navy-800 mb-2"
           style={{ fontFamily: "var(--font-playfair), 'Noto Serif Arabic', serif" }}
         >
-          {category?.name ?? "جميع المنتجات"}
+          {subSlug
+            ? category?.subcategories?.find((s) => s.slug === subSlug)?.name ??
+              category?.name ??
+              "جميع المنتجات"
+            : category?.name ?? "جميع المنتجات"}
         </h1>
-        <p className="text-cream-500 text-sm">
-          {category
-            ? `${filteredProducts.length} منتج متاح`
-            : "تصفح مجموعتنا الكاملة"}
+        <div className="flex items-center gap-2 text-sm text-cream-500">
+          {category && !subSlug && (
+            <div className="flex items-center gap-1.5 flex-wrap">
+              {category.subcategories?.map((sub) => (
+                <Link
+                  key={sub.slug}
+                  href={`/category/${category.slug}?sub=${sub.slug}`}
+                  className="px-3 py-1 rounded-full bg-cream-100 text-navy-700 hover:bg-gold-50 hover:text-gold-600 transition-colors text-xs"
+                >
+                  {sub.name}
+                </Link>
+              ))}
+            </div>
+          )}
+          {subSlug && (
+            <Link
+              href={`/category/${slug}`}
+              className="text-gold-500 hover:text-gold-600 transition-colors text-xs"
+            >
+              العودة لـ {category?.name}
+            </Link>
+          )}
+        </div>
+        <p className="text-cream-500 text-sm mt-2">
+          {filteredProducts.length} منتج متاح
         </p>
       </div>
 

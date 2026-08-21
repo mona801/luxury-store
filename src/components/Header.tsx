@@ -20,7 +20,7 @@ import { cn } from "@/lib/utils";
 import CartDrawer from "./CartDrawer";
 
 export default function Header() {
-  const [megaOpen, setMegaOpen] = useState(false);
+  const [megaCat, setMegaCat] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileSubmenu, setMobileSubmenu] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -105,8 +105,8 @@ export default function Header() {
               <div
                 key={cat.id}
                 className="relative"
-                onMouseEnter={() => setMegaOpen(true)}
-                onMouseLeave={() => setMegaOpen(false)}
+                onMouseEnter={() => setMegaCat(cat.id)}
+                onMouseLeave={() => setMegaCat(null)}
               >
                 <button
                   className={cn(
@@ -121,18 +121,18 @@ export default function Header() {
                     size={14}
                     className={cn(
                       "transition-transform",
-                      megaOpen && "rotate-180"
+                      megaCat === cat.id && "rotate-180"
                     )}
                   />
                 </button>
 
-                {megaOpen && (
+                {megaCat === cat.id && (
                   <div className="absolute top-full right-0 w-64 bg-white border border-cream-200 shadow-lg rounded-b-lg p-5 animate-in fade-in slide-in-from-top-2">
                     <div className="grid gap-1">
                       {cat.subcategories?.map((sub) => (
                         <Link
                           key={sub.slug}
-                          href={`/category/${cat.slug}/${sub.slug}`}
+                          href={`/category/${cat.slug}?sub=${sub.slug}`}
                           className="text-sm text-navy-700 hover:text-gold-500 hover:bg-cream-100 rounded px-3 py-2 transition-colors"
                         >
                           {sub.name}
@@ -291,7 +291,7 @@ export default function Header() {
                       {cat.subcategories?.map((sub) => (
                         <Link
                           key={sub.slug}
-                          href={`/category/${cat.slug}/${sub.slug}`}
+                          href={`/category/${cat.slug}?sub=${sub.slug}`}
                           onClick={() => setMobileOpen(false)}
                           className="block py-2 text-sm text-navy-600 hover:text-gold-500"
                         >
